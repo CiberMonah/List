@@ -1,8 +1,8 @@
 #ifndef LIST_H_INCLUDED
 #define LIST_H_INCLUDED
 
-#define LIST_DUMP(list, size) ({                                                  \
-    dump_list((list), size, __FILE__, __PRETTY_FUNCTION__, __LINE__);         \
+#define LIST_DUMP(list, h, t, f, size) ({                                                  \
+    dump_list((list), h, t, f, size, __FILE__, __PRETTY_FUNCTION__, __LINE__);         \
     })
 
 
@@ -22,8 +22,9 @@ struct NODE {
 
 void list_init(NODE* list);
 void list_dtor(NODE* list);
-void dump_list(NODE* list, unsigned int list_size, const char* file, const char* func, const int line);
-
+void list_delete(NODE* list, int delete_id, int* head, int* tail, int* free_head);
+void list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, int* free_head);
+void dump_list(NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line);
 
 
 #endif
