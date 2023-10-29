@@ -1,6 +1,8 @@
 #include "list.h"
-#include "stdlib.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+
 
 static void print_list_chain(NODE* list, int start_id) {
 
@@ -138,4 +140,29 @@ void list_delete(NODE* list, int delete_id, int* head, int* tail, int* free_head
     list[next].prev_id = prev;
 }
 
+int* list_find(NODE* list, int head_id, Elem_t elem) {
+    //A lot of variants to find element in list
+    //It depands of task
+    //here realisation of searching by going on list chain
+    int search_id = head_id;
+    int* index_array = nullptr;      //index_array[0] - number of indexes with searching number
 
+    index_array = (int*)calloc(START_LENGTH_OF_LIST, sizeof(int));
+    
+    if(index_array == NULL) {
+        printf("Memory allocation error/n");
+        assert(1);
+    }
+
+    int i = 1;
+
+    while(list[search_id].data != POISON) {
+        if(list[search_id].data == elem) {
+            index_array[i++] = search_id;
+            index_array[0]++;
+        }
+        search_id = list[search_id].next_id;
+    }
+
+    return index_array;
+}

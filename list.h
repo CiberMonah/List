@@ -24,6 +24,7 @@ void list_init(NODE* list);
 void list_dtor(NODE* list);
 void list_delete(NODE* list, int delete_id, int* head, int* tail, int* free_head);
 void list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, int* free_head);
+int* list_find(NODE* list, int head_id, Elem_t elem);
 void dump_list(NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line);
 
 
