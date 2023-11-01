@@ -3,65 +3,6 @@
 #include <stdio.h>
 #include <assert.h>
 
-
-static void print_list_chain(NODE* list, int start_id) {
-
-    while(list[start_id].data != POISON) {
-        if(list[start_id].data == FREE_DATA) 
-            printf("%d - %s; ", start_id, "FREE");
-        else    
-            printf("%d - %d; ", start_id, list[start_id].data);
-        
-        start_id = list[start_id].next_id;
-    }
-
-    printf("\n");
-}
-
-void dump_list(NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line) {
-
-    const int NUMBER_OF_SPACES = 5;
-
-    printf( "\nDUMP called in file: %s\n"
-            "In function: %s\n"
-            "On line: %d\n", file, func, line);
-
-    printf("\nList head: %d\n", head);
-    printf("List tail: %d\n", tail);
-    printf("free list head: %d\n", free_head);
-
-    printf("\nid:  ");
-    for(unsigned int i = 0; i < list_size; i ++) {
-        printf("%*d", NUMBER_OF_SPACES, i);
-    } printf("\n\n");
-
-    printf("data:");
-    for(unsigned int i = 0; i < list_size; i ++) {
-        if(list[i].data == FREE_DATA) 
-            printf("%*s", NUMBER_OF_SPACES, "FREE");
-        else if(list[i].data == POISON) 
-            printf("%*s", NUMBER_OF_SPACES, "POIS");
-        else 
-            printf("%*d", NUMBER_OF_SPACES, list[i].data);
-    } printf("\n\n");
-
-    printf("next:");
-    for(unsigned int i = 0; i < list_size; i ++) {
-        printf("%*d", NUMBER_OF_SPACES, list[i].next_id);
-    } printf("\n\n");
-
-    printf("prev:");
-    for(unsigned int i = 0; i < list_size; i ++) {
-        printf("%*d", NUMBER_OF_SPACES, list[i].prev_id);
-    } printf("\n\n");
-
-    printf("Data chain:\n");
-    print_list_chain(list, head);
-    printf("Free data chain\n");
-    print_list_chain(list, free_head);
-}
-
-
 void list_init(NODE* list) {
     list[0].data = POISON;
     list[0].next_id = -1;
