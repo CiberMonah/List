@@ -30,7 +30,7 @@ void list_dtor(NODE* list) {
 }
 
 void list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, int* free_head) {
-    if(*head == 0) {            //first insert
+    if(*head == 0) {                                        //first insert
         *head = insert_id;
         *tail = insert_id;
         list[insert_id].data = elem;
@@ -55,9 +55,12 @@ void list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, i
 
     list[insert_id].next_id = *free_head;
 
+
+    
     list[*free_head].prev_id = insert_id;
     list[*free_head].next_id = tmp;
-    list[*free_head].data = elem;
+    list[*free_head].data = list[insert_id].data;
+    list[insert_id].data = elem;
 
     *free_head = new_free_head;
 }

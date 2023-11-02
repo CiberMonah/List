@@ -5,7 +5,9 @@
 
 static void print_list_chain(FILE* dot_file, NODE* list, int start_id, const char* color) {
     while(list[start_id].data != POISON) {  
-        fprintf(dot_file, "node%d -> node%d [color = \"%s\"];\n", start_id, list[start_id].next_id, color);
+        fprintf(dot_file, "node%d: <next> -> node%d [color = \"%s\"];\n", start_id, list[start_id].next_id, color);
+        if(list[start_id].prev_id != -1)
+            fprintf(dot_file, "node%d: <prev> -> node%d [color = \"#006666\"];\n", start_id, list[start_id].prev_id);
         
         start_id = list[start_id].next_id;
     }
@@ -49,7 +51,7 @@ static void print_main_cells(FILE* dot_file, int head, int tail, int free) {
 void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head, unsigned int list_size) {
 
     fprintf(dot_file, "digraph G{"                          //set base settings and style
-                            "graph [dpi = 100];"
+                            "graph [dpi = 150];"
                             "ranksep = 0.5;"
                             "splines = ortho;"
                             "edge[minlen = 3, penwidth = 3];"
