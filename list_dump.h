@@ -1,7 +1,7 @@
 #ifndef LIST_DUMP_H_INCLUDED
 #define LIST_H_INCLUDED
 
-#define LIST_DUMP(file, list, h, t, f, size) ({                                                       \
+#define LIST_DUMP(file, list, h, t, f, size) ({                                                             \
     dump_list((file), (dotf) (list), h, t, f, size, __FILE__, __PRETTY_FUNCTION__, __LINE__);               \
     })
 

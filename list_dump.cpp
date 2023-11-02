@@ -18,16 +18,16 @@ static void make_nodes_in_raw (FILE* dot_file, unsigned int list_size) {
         else
             fprintf(dot_file, "node%d ->", i);
     }
-    fprintf(dot_file, "[weight = 5; style = invis];\n");
+    fprintf(dot_file, "[weight = 10000; style = invis];\n");
 }
 
 static void print_node(FILE* dot_file, NODE* list, int id) {
     if(list[id].data == FREE_DATA) 
-        fprintf(dot_file, "node%d[label = \"NODE_%d| {<data> data : %s| <next> next : %d | <prev> prev : %d}\"];\n", id, id,"FREE", list[id].next_id, list[id].prev_id);
+        fprintf(dot_file, "node%d[shape = Mrecord, style = filled, fillcolor=\"#DDFFDD\", label = \"NODE_%d| {<data> data : %s| <next> next : %d | <prev> prev : %d}\"];\n", id, id,"FREE", list[id].next_id, list[id].prev_id);
     else if(list[id].data == POISON) 
-        fprintf(dot_file, "node%d[label = \"NODE_%d| {<data> data : %s| <next> next : %d | <prev> prev : %d}\"];\n", id, id, "POIS", list[id].next_id, list[id].prev_id);
+        fprintf(dot_file, "node%d[shape = Mrecord, style = filled, fillcolor=\"#FF0000\", label = \"NODE_%d| {<data> data : %s| <next> next : %d | <prev> prev : %d}\"];\n", id, id, "POIS", list[id].next_id, list[id].prev_id);
     else 
-        fprintf(dot_file, "node%d[label = \"NODE_%d| {<data> data : %d| <next> next : %d | <prev> prev : %d}\"];\n", id, id, list[id].data, list[id].next_id, list[id].prev_id);
+        fprintf(dot_file, "node%d[shape = Mrecord, style = filled, fillcolor=\"#FFAA55\", label = \"NODE_%d| {<data> data : %d| <next> next : %d | <prev> prev : %d}\"];\n", id, id, list[id].data, list[id].next_id, list[id].prev_id);
 }
 
 static void print_all_nodes (FILE* dot_file, NODE* list, unsigned int list_size) {
@@ -53,18 +53,20 @@ void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head
                             "ranksep = 0.5;"
                             "splines = ortho;"
                             "edge[minlen = 3, penwidth = 3];"
+                            "graph [bgcolor=\"#31353b\"]"
+	                        "node[color=\"black\",fontsize=14];"
+	                        "edge[color=\"darkgreen\",fontcolor=\"blue\",fontsize=12];"
+                            "node[shape = record, style = rounded,fixedsize = true, height = 1, width = 3,fontsize = 20];\n");
 
-                            "node[shape = record, style = rounded,fixedsize = true, height = 1, width = 3,fontsize = 20];");
-
-    fprintf(dot_file,       "{rank = min;"                  //set sizes of cells head tail free
-		                    "head[label = \"head\", width = 1];"
-	                        "}"
-                            "{rank = min;"
-                                "tail[label = \"tail\", width = 1];"
-                            "}"
-                            "{rank = min;"
-                                "free[label = \"free\", width = 1];"
-                            "}");
+    fprintf(dot_file,       "{rank = min;\n"                  //set sizes of cells head tail free
+		                        "head[label = \"head\", shape = Mrecord, style = filled, fillcolor=\"#007700\",width = 1];\n"
+	                        "}\n"
+                            "{rank = min;\n"
+                                "tail[label = \"tail\", shape = Mrecord, style = filled, fillcolor=\"#FF00FF\", width = 1];\n"
+                            "}\n"
+                            "{rank = min;\n"
+                                "free[label = \"free\", shape = Mrecord, style = filled, fillcolor=\"#FFDDFF\", width = 1];\n"
+                            "}\n");
 
     print_all_nodes(dot_file, list, list_size);
 
