@@ -2,7 +2,7 @@
 #define LIST_H_INCLUDED
 
 
-const int START_LENGTH_OF_LIST = 20;
+const int START_LENGTH_OF_LIST = 7;
 
 typedef int Elem_t;
 

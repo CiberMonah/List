@@ -32,7 +32,9 @@ int main() {
     //     printf("%d ", search_array[i]);
     // }
 
-    make_dot(dot_file, my_list, head, tail, free_head, START_LENGTH_OF_LIST);
+    //make_dot_dump(dot_file, my_list, head, tail, free_head, START_LENGTH_OF_LIST);
+
+    LIST_HTML_DUMP(my_list, head, tail, free_head, START_LENGTH_OF_LIST);
 
     list_dtor(my_list);
 

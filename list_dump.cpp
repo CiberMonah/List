@@ -50,7 +50,7 @@ static void print_main_cells(FILE* dot_file, int head, int tail, int free) {
     fprintf(dot_file, "free -> node%d;\n", free);
 }
 
-void make_dot(FILE* dot_file, NODE* list, int head, int tail, int free_head, unsigned int list_size) {
+void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head, unsigned int list_size) {
 
     fprintf(dot_file, "digraph G{"                          //set base settings and style
                             "graph [dpi = 100];"
@@ -80,7 +80,50 @@ void make_dot(FILE* dot_file, NODE* list, int head, int tail, int free_head, uns
 
 }
 
-void dump_list(FILE* dump_file, FILE* dot_file, NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line) {
+void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line) {
+
+    FILE* file_dot = nullptr;
+
+    if ((file_dot = fopen("my_dot.dot", "w")) == NULL) {
+        printf("File creating error");
+        return;
+    }
+
+    make_dot_dump(file_dot, list, head, tail, free_head, list_size);
+
+    fclose(file_dot);                                   //dot file created
+
+    system("dot my_dot.dot -T png -o my_dot.png");      //png created
+////////////////////////////////////////////////////////////////////////////////////////
+    FILE* dump_txt = nullptr;
+
+    if ((dump_txt = fopen("dump.txt", "w")) == NULL) {
+        printf("File creating error");
+        return;
+    }
+
+    dump_list(dump_txt, list, head, tail, free_head, list_size, file, func, line);
+////////////////////////////////////////////////////////////////////////////////////////
+    FILE* dump_html = nullptr;
+
+    if ((dump_html = fopen("dump.html", "w")) == NULL) {
+        printf("File creating error");
+        return;
+    }
+
+    fprintf(dump_html, "<!DOCTYPE html>\n"
+                    "<html>\n");
+    fprintf(dump_html, "<iframe src=\"dump.txt\" width=\"100%%\" height=\"300\">\n");
+    fprintf(dump_html, "</iframe>\n");
+
+    fprintf(dump_html, "<img src=\"my_dot.png\">\n");   //Added img
+    fprintf(dump_html, "</html>\n");
+
+
+    fclose(dump_html);
+}
+
+void dump_list(FILE* dump_file, NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line) {
 
     const int NUMBER_OF_SPACES = 5;
 
@@ -94,8 +137,8 @@ void dump_list(FILE* dump_file, FILE* dot_file, NODE* list, int head, int tail, 
 
     fprintf(dump_file,"\nid:  ");
     for(unsigned int i = 0; i < list_size; i ++) {
-        printf("%*d", NUMBER_OF_SPACES, i);
-    } printf("\n\n");
+        fprintf(dump_file, "%*d", NUMBER_OF_SPACES, i);
+    } fprintf(dump_file, "\n\n");
 
     fprintf(dump_file, "data:");
     for(unsigned int i = 0; i < list_size; i ++) {
