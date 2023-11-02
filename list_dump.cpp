@@ -3,17 +3,13 @@
 #include "list.h"
 #include "list_dump.h"
 
-// static void print_list_chain(NODE* list, int start_id) {
-//     while(list[start_id].data != POISON) {
-//         if(list[start_id].data == FREE_DATA) 
-//             printf("%d - %s; ", start_id, "FREE");
-//         else    
-//             printf("%d - %d; ", start_id, list[start_id].data);
+static void print_list_chain(FILE* dot_file, NODE* list, int start_id, const char* color) {
+    while(list[start_id].data != POISON) {  
+        fprintf(dot_file, "node%d -> node%d [color = \"%s\"];\n", start_id, list[start_id].next_id, color);
         
-//         start_id = list[start_id].next_id;
-//     }
-//     printf("\n");
-// }
+        start_id = list[start_id].next_id;
+    }
+}
 
 static void make_nodes_in_raw (FILE* dot_file, unsigned int list_size) {
     for(unsigned int i = 0; i < list_size; i++) {
@@ -27,11 +23,11 @@ static void make_nodes_in_raw (FILE* dot_file, unsigned int list_size) {
 
 static void print_node(FILE* dot_file, NODE* list, int id) {
     if(list[id].data == FREE_DATA) 
-        fprintf(dot_file, "node%d[label = \"NODE_%d| {<data> data : %s| <next> next | <prev> prev}\"];\n", id, id,"FREE");
+        fprintf(dot_file, "node%d[label = \"NODE_%d| {<data> data : %s| <next> next : %d | <prev> prev : %d}\"];\n", id, id,"FREE", list[id].next_id, list[id].prev_id);
     else if(list[id].data == POISON) 
-        fprintf(dot_file, "node%d[label = \"NODE_%d| {<data> data : %s| <next> next | <prev> prev}\"];\n", id, id, "POIS");
+        fprintf(dot_file, "node%d[label = \"NODE_%d| {<data> data : %s| <next> next : %d | <prev> prev : %d}\"];\n", id, id, "POIS", list[id].next_id, list[id].prev_id);
     else 
-        fprintf(dot_file, "node%d[label = \"NODE_%d| {<data> data : %d| <next> next | <prev> prev}\"];\n", id, id, list[id].data);
+        fprintf(dot_file, "node%d[label = \"NODE_%d| {<data> data : %d| <next> next : %d | <prev> prev : %d}\"];\n", id, id, list[id].data, list[id].next_id, list[id].prev_id);
 }
 
 static void print_all_nodes (FILE* dot_file, NODE* list, unsigned int list_size) {
@@ -45,9 +41,9 @@ static void print_all_nodes (FILE* dot_file, NODE* list, unsigned int list_size)
 }
 
 static void print_main_cells(FILE* dot_file, int head, int tail, int free) {
-    fprintf(dot_file, "head -> node%d;\n", head);
-    fprintf(dot_file, "tail -> node%d;\n", tail);
-    fprintf(dot_file, "free -> node%d;\n", free);
+    fprintf(dot_file, "head -> node%d [color = \"green\"];\n", head);
+    fprintf(dot_file, "tail -> node%d [color = \"blue\"];\n", tail);
+    fprintf(dot_file, "free -> node%d [color = \"red\"];\n", free);
 }
 
 void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head, unsigned int list_size) {
@@ -75,6 +71,10 @@ void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head
     print_main_cells(dot_file, head, tail, free_head);
 
     make_nodes_in_raw(dot_file, list_size);
+
+    print_list_chain(dot_file, list, head, "#76EE00");                  //make data edges
+
+    print_list_chain(dot_file, list, free_head, "#00C5CD");              //make free edges
 
     fprintf(dot_file, "}");
 
@@ -112,7 +112,7 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
     }
 
     fprintf(dump_html, "<!DOCTYPE html>\n"
-                    "<html>\n");
+                       "<html>\n");
     fprintf(dump_html, "<iframe src=\"dump.txt\" width=\"100%%\" height=\"300\">\n");
     fprintf(dump_html, "</iframe>\n");
 
