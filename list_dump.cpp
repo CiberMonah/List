@@ -7,7 +7,7 @@ static void print_list_chain(FILE* dot_file, NODE* list, int start_id, const cha
     while(list[start_id].data != POISON) {  
         fprintf(dot_file, "node%d: <next> -> node%d [color = \"%s\"];\n", start_id, list[start_id].next_id, color);
         if(list[start_id].prev_id != -1)
-            fprintf(dot_file, "node%d: <prev> -> node%d [color = \"#006666\"];\n", start_id, list[start_id].prev_id);
+            fprintf(dot_file, "node%d: <prev> -> node%d [color = \"#f7943c\"];\n", start_id, list[start_id].prev_id);
         
         start_id = list[start_id].next_id;
     }
@@ -25,9 +25,9 @@ static void make_nodes_in_raw (FILE* dot_file, unsigned int list_size) {
 
 static void print_node(FILE* dot_file, NODE* list, int id) {
     if(list[id].data == FREE_DATA) 
-        fprintf(dot_file, "node%d[shape = Mrecord, style = filled, fillcolor=\"#DDFFDD\", label = \"NODE_%d| {<data> data : %s| <next> next : %d | <prev> prev : %d}\"];\n", id, id,"FREE", list[id].next_id, list[id].prev_id);
+        fprintf(dot_file, "node%d[shape = Mrecord, style = filled, fillcolor=\"#DDFFDD\", label = \"NODE_%d| {<data> FREE| <next> next : %d | <prev> prev : %d}\"];\n", id, id, list[id].next_id, list[id].prev_id);
     else if(list[id].data == POISON) 
-        fprintf(dot_file, "node%d[shape = Mrecord, style = filled, fillcolor=\"#FF0000\", label = \"NODE_%d| {<data> data : %s| <next> next : %d | <prev> prev : %d}\"];\n", id, id, "POIS", list[id].next_id, list[id].prev_id);
+        fprintf(dot_file, "node%d[shape = Mrecord, style = filled, fillcolor=\"#FF0000\", label = \"NODE_%d| {<data> POISON| <next> next : %d | <prev> prev : %d}\"];\n", id, id, list[id].next_id, list[id].prev_id);
     else 
         fprintf(dot_file, "node%d[shape = Mrecord, style = filled, fillcolor=\"#FFAA55\", label = \"NODE_%d| {<data> data : %d| <next> next : %d | <prev> prev : %d}\"];\n", id, id, list[id].data, list[id].next_id, list[id].prev_id);
 }
@@ -51,14 +51,15 @@ static void print_main_cells(FILE* dot_file, int head, int tail, int free) {
 void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head, unsigned int list_size) {
 
     fprintf(dot_file, "digraph G{"                          //set base settings and style
+                            "rankdir = HR;"
                             "graph [dpi = 150];"
-                            "ranksep = 0.5;"
+                            "ranksep = 1;"
                             "splines = ortho;"
                             "edge[minlen = 3, penwidth = 3];"
                             "graph [bgcolor=\"#31353b\"]"
 	                        "node[color=\"black\",fontsize=14];"
 	                        "edge[color=\"darkgreen\",fontcolor=\"blue\",fontsize=12];"
-                            "node[shape = record, style = rounded,fixedsize = true, height = 1, width = 3,fontsize = 20];\n");
+                            "node[shape = record, style = rounded, fixedsize = true, height = 1, width = 3, fontsize = 20];\n");
 
     fprintf(dot_file,       "{rank = min;\n"                  //set sizes of cells head tail free
 		                        "head[label = \"head\", shape = Mrecord, style = filled, fillcolor=\"#007700\",width = 1];\n"
@@ -70,15 +71,15 @@ void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head
                                 "free[label = \"free\", shape = Mrecord, style = filled, fillcolor=\"#FFDDFF\", width = 1];\n"
                             "}\n");
 
-    print_all_nodes(dot_file, list, list_size);
-
     print_main_cells(dot_file, head, tail, free_head);
+    
+    print_all_nodes(dot_file, list, list_size);
 
     make_nodes_in_raw(dot_file, list_size);
 
-    print_list_chain(dot_file, list, head, "#76EE00");                  //make data edges
+    print_list_chain(dot_file, list, head, "#76EE00");                      //make data edges
 
-    print_list_chain(dot_file, list, free_head, "#00C5CD");              //make free edges
+    print_list_chain(dot_file, list, free_head, "#00C5CD");                 //make free edges
 
     fprintf(dot_file, "}");
 

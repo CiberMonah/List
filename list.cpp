@@ -37,7 +37,7 @@ void list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, i
         list[insert_id].next_id = 0;
         list[insert_id].prev_id = 0;
 
-        if(insert_id != 1) {                                //Это ROFLS
+        if(insert_id != 1) {                              
             list[insert_id - 1].next_id = insert_id + 1;    
         }
 
@@ -50,17 +50,18 @@ void list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, i
     if(insert_id == *tail)
         *tail = *free_head;
 
-    int tmp = list[insert_id].next_id;
     int new_free_head = list[*free_head].next_id;
+
+    Elem_t old_data = list[insert_id].data;         //Changed data
+    list[*free_head].data = old_data;
+
+    list[*free_head].prev_id = insert_id;
+    list[list[insert_id].next_id].prev_id = *free_head;
+    list[*free_head].next_id = list[insert_id].next_id;
 
     list[insert_id].next_id = *free_head;
 
 
-    
-    list[*free_head].prev_id = insert_id;
-    list[*free_head].next_id = tmp;
-    list[*free_head].data = list[insert_id].data;
-    list[insert_id].data = elem;
 
     *free_head = new_free_head;
 }
