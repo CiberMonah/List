@@ -7,7 +7,7 @@ static void print_list_chain(FILE* dot_file, NODE* list, int start_id, const cha
     while(list[start_id].data != POISON) {  
         fprintf(dot_file, "node%d: <next> -> node%d [color = \"%s\"];\n", start_id, list[start_id].next_id, color);
         if(list[start_id].prev_id != -1)
-            fprintf(dot_file, "node%d: <prev> -> node%d [color = \"#f7943c\"];\n", start_id, list[start_id].prev_id);
+            fprintf(dot_file, "node%d: <prev> -> node%d [color = \"red\"];\n", start_id, list[start_id].prev_id);
         
         start_id = list[start_id].next_id;
     }
@@ -51,14 +51,14 @@ static void print_main_cells(FILE* dot_file, int head, int tail, int free) {
 void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head, unsigned int list_size) {
 
     fprintf(dot_file, "digraph G{"                          //set base settings and style
-                            "rankdir = HR;"
-                            "graph [dpi = 150];"
-                            "ranksep = 1;"
-                            "splines = ortho;"
-                            "edge[minlen = 3, penwidth = 3];"
+                            "rankdir = HR;\n"
+                            "graph [dpi = 150];\n"
+                            "ranksep = 0.5;\n"
+                            "splines = ortho;\n"
+                            "edge[minlen = 3, penwidth = 3];\n"
                             "graph [bgcolor=\"#31353b\"]"
-	                        "node[color=\"black\",fontsize=14];"
-	                        "edge[color=\"darkgreen\",fontcolor=\"blue\",fontsize=12];"
+	                        "node[color=\"black\",fontsize=14];\n"
+	                        "edge[color=\"darkgreen\",fontcolor=\"blue\",fontsize=12];\n"
                             "node[shape = record, style = rounded, fixedsize = true, height = 1, width = 3, fontsize = 20];\n");
 
     fprintf(dot_file,       "{rank = min;\n"                  //set sizes of cells head tail free
@@ -85,11 +85,12 @@ void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head
 
 }
 
+
 void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line) {
 
     FILE* file_dot = nullptr;
 
-    if ((file_dot = fopen("my_dot.dot", "w")) == NULL) {
+    if ((file_dot = fopen("my_dot.dot", "a")) == NULL) {
         printf("File creating error");
         return;
     }
@@ -99,7 +100,7 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
     fclose(file_dot);                                   //dot file created
 
     system("dot my_dot.dot -T png -o my_dot.png");      //png created
-////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
     FILE* dump_txt = nullptr;
 
     if ((dump_txt = fopen("dump.txt", "w")) == NULL) {
@@ -108,20 +109,19 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
     }
 
     dump_list(dump_txt, list, head, tail, free_head, list_size, file, func, line);
-////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
     FILE* dump_html = nullptr;
 
     if ((dump_html = fopen("dump.html", "w")) == NULL) {
         printf("File creating error");
         return;
     }
-
     fprintf(dump_html, "<!DOCTYPE html>\n"
-                       "<html>\n");
+                           "<html>\n");
     fprintf(dump_html, "<iframe src=\"dump.txt\" width=\"100%%\" height=\"300\">\n");
     fprintf(dump_html, "</iframe>\n");
 
-    fprintf(dump_html, "<img src=\"my_dot.png\">\n");   //Added img
+    fprintf(dump_html, "<img src=\"my_dot.png\" width=\"%d\" height=\"200\">\n", 150 * list_size);   //Added img
     fprintf(dump_html, "</html>\n");
 
 
@@ -131,7 +131,7 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
 void dump_list(FILE* dump_file, NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line) {
 
     const int NUMBER_OF_SPACES = 5;
-
+    
     fprintf(dump_file, "\nDUMP called in file: %s\n"
             "In function: %s\n"
             "On line: %d\n", file, func, line);

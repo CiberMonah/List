@@ -29,7 +29,7 @@ void list_dtor(NODE* list) {
     }
 }
 
-void list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, int* free_head) {
+int list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, int* free_head) {
     if(*head == 0) {                                        //first insert
         *head = insert_id;
         *tail = insert_id;
@@ -41,7 +41,7 @@ void list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, i
             list[insert_id - 1].next_id = insert_id + 1;    
         }
 
-        return;
+        return insert_id;
     }
 
     if(insert_id == *head)
@@ -52,8 +52,8 @@ void list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, i
 
     int new_free_head = list[*free_head].next_id;
 
-    Elem_t old_data = list[insert_id].data;         //Changed data
-    list[*free_head].data = old_data;
+    //Elem_t old_data = list[insert_id].data;         //Changed data
+    list[*free_head].data = elem;
 
     list[*free_head].prev_id = insert_id;
     list[list[insert_id].next_id].prev_id = *free_head;
@@ -61,9 +61,11 @@ void list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, i
 
     list[insert_id].next_id = *free_head;
 
-
+    int tmp = *free_head;
 
     *free_head = new_free_head;
+
+    return tmp;
 }
 
 
@@ -110,4 +112,19 @@ int* list_find(NODE* list, int head_id, Elem_t elem) {
     }
 
     return index_array;
+}
+
+//Do not use this function
+
+void realloc_list (NODE* list, unsigned int* list_size, unsigned int new_list_size) {
+    if(new_list_size <= *list_size) {
+        list = (NODE*)realloc(list, new_list_size);         //may loosing information
+        list[new_list_size].next_id = 0;
+    } else {
+        for(unsigned int i = *list_size; i < new_list_size; i++) {
+            list[i].data = FREE_DATA;                               //last elem should be free
+            list[i -1].next_id = i;
+            list[i].prev_id = i - 1;
+        }
+    }
 }
