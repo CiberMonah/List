@@ -159,6 +159,7 @@ void dump_list(FILE* dump_file, NODE* list, int head, int tail, int free_head, u
             "In function: %s\n"
             "On line: %d\n", file, func, line);
 
+    fprintf(dump_file,"\nSize of list: %d\n", list_size);
     fprintf(dump_file,"\nList head: %d\n", head);
     fprintf(dump_file,"List tail: %d\n", tail);
     fprintf(dump_file,"free list head: %d\n", free_head);
