@@ -3,6 +3,8 @@
 #include "list.h"
 #include "list_dump.h"
 
+int iteration = 0;              //Uses to make o lot of png in raw
+
 static void print_list_chain(FILE* dot_file, NODE* list, int start_id, const char* color) {
     while(list[start_id].data != POISON) {  
         fprintf(dot_file, "node%d: <next> -> node%d [color = \"%s\"];\n", start_id, list[start_id].next_id, color);
@@ -86,11 +88,16 @@ void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head
 }
 
 
+
 void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line) {
 
     FILE* file_dot = nullptr;
 
-    if ((file_dot = fopen("my_dot.dot", "a")) == NULL) {
+    char dot_name[] = "my_dot*.dot";
+
+    dot_name[6] = (char) iteration + 65;
+
+    if ((file_dot = fopen(dot_name, "a")) == NULL) {
         printf("File creating error");
         return;
     }
@@ -99,16 +106,28 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
 
     fclose(file_dot);                                   //dot file created
 
-    system("dot my_dot.dot -T png -o my_dot.png");      //png created
+                   //0123456789012345678901234567890123456
+    char comand[] = "dot my_dot*.dot -T png -o my_dot*.png";
+
+    comand[10] = (char) iteration + 65;
+    comand[32] = (char) iteration + 65;
+
+    system(comand);      //png created
+
     ////////////////////////////////////////////////////////////////////////////////////////
     FILE* dump_txt = nullptr;
 
-    if ((dump_txt = fopen("dump.txt", "w")) == NULL) {
+    char txt_name[] = "dump*.txt";
+
+    txt_name[4] = (char) (iteration + 65);
+
+    if ((dump_txt = fopen(txt_name, "w")) == NULL) {
         printf("File creating error");
         return;
     }
 
     dump_list(dump_txt, list, head, tail, free_head, list_size, file, func, line);
+
     ////////////////////////////////////////////////////////////////////////////////////////
     FILE* dump_html = nullptr;
 
@@ -116,16 +135,20 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
         printf("File creating error");
         return;
     }
+
     fprintf(dump_html, "<!DOCTYPE html>\n"
-                           "<html>\n");
-    fprintf(dump_html, "<iframe src=\"dump.txt\" width=\"100%%\" height=\"300\">\n");
-    fprintf(dump_html, "</iframe>\n");
+                           "<html>\n<body>\n");
+    for(int i = 0; i <= iteration; i++) { 
+        fprintf(dump_html, "<div> iteration : %d </div>\n", i);
+        fprintf(dump_html, "<iframe src=\"dump%c.txt\" width=\"100%%\" height=\"300\">\n</iframe>\n", (char)(i + 65));
+        fprintf(dump_html, "<img src=\"my_dot%c.png\" width=\"%d\" height=\"200\">\n", (char)(i + 65), 150 * list_size);
+    }
 
-    fprintf(dump_html, "<img src=\"my_dot.png\" width=\"%d\" height=\"200\">\n", 150 * list_size);   //Added img
-    fprintf(dump_html, "</html>\n");
-
+    fprintf(dump_html, "</body>\n</html>\n");
 
     fclose(dump_html);
+
+    iteration++;
 }
 
 void dump_list(FILE* dump_file, NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line) {

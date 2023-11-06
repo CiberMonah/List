@@ -23,6 +23,9 @@ int main() {
                                                                
     list_insert(my_list, 4, 5, &head, &tail, &free_head);               
     list_insert(my_list, 4, 6, &head, &tail, &free_head);
+    
+    LIST_HTML_DUMP(my_list, head, tail, free_head, START_LENGTH_OF_LIST);
+
     list_insert(my_list, 4, 7, &head, &tail, &free_head);
 
     //int* search_array = list_find(my_list, head, 5);
