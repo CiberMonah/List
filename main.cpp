@@ -20,23 +20,26 @@ int main() {
     int head = 0;
     int tail = 0;
     int free_head = 1;
+
+    LIST_HTML_DUMP(my_list, head, tail, free_head, START_LENGTH_OF_LIST);
                                                                
-    list_insert(my_list, 4, 5, &head, &tail, &free_head);               
+    list_insert(my_list, 4, 5, &head, &tail, &free_head); 
+
+    LIST_HTML_DUMP(my_list, head, tail, free_head, START_LENGTH_OF_LIST);
+
     list_insert(my_list, 4, 6, &head, &tail, &free_head);
-    
+
     LIST_HTML_DUMP(my_list, head, tail, free_head, START_LENGTH_OF_LIST);
 
     list_insert(my_list, 4, 7, &head, &tail, &free_head);
+
+    LIST_HTML_DUMP(my_list, head, tail, free_head, START_LENGTH_OF_LIST);
 
     //int* search_array = list_find(my_list, head, 5);
 
     // for(int i = 0; i < search_array[0]; i++) {
     //     printf("%d ", search_array[i]);
     // }
-
-    //make_dot_dump(dot_file, my_list, head, tail, free_head, START_LENGTH_OF_LIST);
-
-    LIST_HTML_DUMP(my_list, head, tail, free_head, START_LENGTH_OF_LIST);
 
     list_dtor(my_list);
 

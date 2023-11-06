@@ -97,7 +97,7 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
 
     dot_name[6] = (char) iteration + 65;
 
-    if ((file_dot = fopen(dot_name, "a")) == NULL) {
+    if ((file_dot = fopen(dot_name, "w")) == NULL) {
         printf("File creating error");
         return;
     }
