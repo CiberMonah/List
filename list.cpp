@@ -116,15 +116,28 @@ int* list_find(NODE* list, int head_id, Elem_t elem) {
 
 //Do not use this function
 
-void realloc_list (NODE* list, unsigned int* list_size, unsigned int new_list_size) {
+void realloc_list (NODE* list, int* list_size, int new_list_size, int* free_head) {
     if(new_list_size <= *list_size) {
-        list = (NODE*)realloc(list, new_list_size);         //may loosing information
+        list = (NODE*)realloc(list, new_list_size);             //Realloc to the smaller size (UNSAFE)
         list[new_list_size].next_id = 0;
-    } else {
-        for(unsigned int i = *list_size; i < new_list_size; i++) {
-            list[i].data = FREE_DATA;                               //last elem should be free
-            list[i -1].next_id = i;
-            list[i].prev_id = i - 1;
+    } else {                                                    //Realloc to the biiger size
+        int new_free_head = *list_size;
+
+        list[*list_size].prev_id = -1;
+        list[*list_size].next_id = *list_size + 1;
+        list[*list_size].data = FREE_DATA;
+
+        for(int i = *list_size + 1; i < new_list_size - 1; i++) {
+            list[i].data = FREE_DATA;
+            list[i].prev_id = -1;
+            list[i].next_id = i + 1;                               
         }
+
+        list[new_list_size - 1].next_id = *free_head;               //Add free nodes to the start of freelist
+        list[new_list_size - 1].prev_id = - 1;
+        list[new_list_size - 1].data = FREE_DATA;
+
+        *free_head = new_free_head;
+        *list_size = new_list_size;
     }
 }
