@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "list.h"
 #include "list_dump.h"
 
@@ -53,6 +54,7 @@ static void print_main_cells(FILE* dot_file, int head, int tail, int free) {
 }
 
 void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head, unsigned int list_size) {
+    assert(dot_file != nullptr);
 
     fprintf(dot_file, "digraph G{"                          //set base settings and style
                             "rankdir = HR;\n"
@@ -74,6 +76,7 @@ void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head
                             "{rank = min;\n"
                                 "free[label = \"free\", shape = Mrecord, style = filled, fillcolor=\"#FFDDFF\", width = 1];\n"
                             "}\n");
+
 
     print_main_cells(dot_file, head, tail, free_head);
     
@@ -102,8 +105,11 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
         printf("File creating error");
         return;
     }
+    
 
     make_dot_dump(file_dot, list, head, tail, free_head, list_size);
+
+    
 
     fclose(file_dot);                                   //dot file created
 
@@ -116,11 +122,13 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
     system(comand);      //png created
 
     ////////////////////////////////////////////////////////////////////////////////////////
+    
+
     FILE* dump_txt = nullptr;
 
     char txt_name[] = "dump*.txt";
 
-    txt_name[4] = (char) (iteration + 65);
+    txt_name[4] = (char)(iteration + 65);
 
     if ((dump_txt = fopen(txt_name, "w")) == NULL) {
         printf("File creating error");
@@ -147,15 +155,13 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
 
     fprintf(dump_html, "</body>\n</html>\n");
 
-    fclose(dump_html);
+    fclose(dump_txt);       //Я ХЗ лучше реально не использовать сразу много файлов
 
     iteration++;
 }
 
 void dump_list(FILE* dump_file, NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line) {
-
     const int NUMBER_OF_SPACES = 5;
-    
     fprintf(dump_file, "\nDUMP called in file: %s\n"
             "In function: %s\n"
             "On line: %d\n", file, func, line);

@@ -5,12 +5,6 @@
 
 int main() {
     NODE* my_list = nullptr;
-    FILE* dot_file = nullptr;
-
-    if ((dot_file = fopen("my_dot.dot", "w")) == NULL) {
-        printf("File creating error");
-        return 1;
-    }
 
     my_list = (NODE*)calloc(START_LENGTH_OF_LIST, sizeof(NODE));
 
@@ -45,8 +39,6 @@ int main() {
     LIST_HTML_DUMP(my_list, head, tail, free_head, list_size); 
 
     list_dtor(my_list);
-
-    fclose(dot_file);
 
     free(my_list);
 }
