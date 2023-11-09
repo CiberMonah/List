@@ -22,4 +22,12 @@ There are realisations of 4 functions:
 3. Find_elem
 4. Realloc_list
 
+## Realloc
+List at start:
+![image](https://github.com/CiberMonah/List/assets/142305833/eb95f45c-5bb6-43c3-9adf-4385b3a4beee)
+### Reallocation on biiger size
+![image](https://github.com/CiberMonah/List/assets/142305833/c72d4fb1-5e75-46de-97b5-98f627ba87c9)
+### Reallocation on less size
+![image](https://github.com/CiberMonah/List/assets/142305833/e651ccab-0b1d-4e49-9295-9ee8f533b555)
+
 
