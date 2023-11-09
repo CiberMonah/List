@@ -36,9 +36,13 @@ int main() {
 
     LIST_HTML_DUMP(my_list, head, tail, free_head, list_size);
 
-    realloc_list(&my_list, &list_size, 25, &free_head);                     //gets pointer on my_list, because pointer of my_list will change
+    realloc_list(&my_list, &list_size, 25, &head, &tail, &free_head);                      //gets pointer on my_list, because pointer of my_list will change
 
     LIST_HTML_DUMP(my_list, head, tail, free_head, list_size);
+
+    realloc_list(&my_list, &list_size, 3, &head, &tail, &free_head);
+
+    LIST_HTML_DUMP(my_list, head, tail, free_head, list_size); 
 
     list_dtor(my_list);
 

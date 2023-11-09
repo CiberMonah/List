@@ -142,7 +142,7 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
     for(int i = 0; i <= iteration; i++) { 
         fprintf(dump_html, "<div> iteration : %d </div>\n", i);
         fprintf(dump_html, "<iframe src=\"dump%c.txt\" width=\"100%%\" height=\"300\">\n</iframe>\n", (char)(i + 65));
-        fprintf(dump_html, "<img src=\"my_dot%c.png\" width=\"%d\" height=\"200\">\n", (char)(i + 65), 150 * list_size);
+        fprintf(dump_html, "<img src=\"my_dot%c.png\" height=\"200\">\n", (char)(i + 65));
     }
 
     fprintf(dump_html, "</body>\n</html>\n");

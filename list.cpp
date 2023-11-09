@@ -116,10 +116,57 @@ int* list_find(NODE* list, int head_id, Elem_t elem) {
 
 //Do not use this function
 
-void realloc_list (NODE** list, int* list_size, int new_list_size, int* free_head) {
+void realloc_list (NODE** list, int* list_size, int new_list_size, int* head, int* tail, int* free_head) {
     if(new_list_size <= *list_size) {
-        *list = (NODE*)realloc(*list, new_list_size * sizeof(NODE));                 //Realloc to the smaller size (UNSAFE)
-        list[new_list_size]->next_id = 0;                        
+        NODE* new_list = (NODE*)calloc(new_list_size, sizeof(NODE));       //Calloc list with smaller size (UNSAFE and very long)
+        new_list[0].data = POISON;
+        new_list[0].prev_id = -1;
+        new_list[0].next_id = -1;
+
+        int next = *head;
+
+        *head = 1;
+        
+        int i = 1;
+
+        while((*list + next)->data != POISON) {                                        //Copy all nodes to new_list starting from 1 element
+            //printf("data %d, next %d\n", (*list + next)->data, (*list + next)->next_id);
+            new_list[i].data = (*list + next)->data;
+            new_list[i].prev_id = i - 1;
+
+            if(i == new_list_size) {                                                //number of nodes >= list size; may loose information
+                new_list[i].prev_id = i - 1;
+                new_list[i].next_id = 0;
+                
+                *list = new_list;
+                
+                *free_head = 0;
+                *tail = i - 1;
+                *list_size = new_list_size;
+                return;
+            }
+            new_list[i - 1].next_id = i;
+            new_list[i].next_id = 0;
+
+            i++;
+            next = (*list + next)->next_id;
+        }
+
+        *tail = i - 1;
+        *free_head = i;
+
+        for(int j = i; j < new_list_size; j++) {                                     //set other nodes FREE
+            new_list[j].data = FREE_DATA;
+            new_list[j].prev_id = -1;
+            if(j != new_list_size - 1)
+                new_list[j].next_id = j + 1;
+            else
+                new_list[j].next_id = 0;
+        }
+        
+        *list = new_list;
+        *list_size = new_list_size;
+
     } else {                                                                        //Realloc to the biiger size
         *list = (NODE*)realloc(*list, new_list_size * sizeof(NODE));  
         if(*list == nullptr) {

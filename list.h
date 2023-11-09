@@ -21,6 +21,6 @@ void list_dtor(NODE* list);
 void list_delete(NODE* list, int delete_id, int* head, int* tail, int* free_head);
 int list_insert(NODE* list, int insert_id, Elem_t elem, int* head, int* tail, int* free_head);
 int* list_find(NODE* list, int head_id, Elem_t elem);
-void realloc_list (NODE** list, int* list_size, int new_list_size, int* free_head);
+void realloc_list (NODE** list, int* list_size, int new_list_size, int* head, int* tail, int* free_head);
 
 #endif
