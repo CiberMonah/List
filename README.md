@@ -6,9 +6,9 @@ Here is an implementation of a doubly linked list in an array. This implementati
 
 I used graphviz  https://graphviz.org/ to make images of list
 
-dot my_dot*.dot -T png -o my_dot*.png
-
 type this in console to make inage from dot file
+
+*dot my_dot*.dot -T png -o my_dot*.png*
 
 My dump generates images and put them to one html file for convenient debugging
 
@@ -30,4 +30,23 @@ List at start:
 ### Reallocation on less size
 ![image](https://github.com/CiberMonah/List/assets/142305833/e651ccab-0b1d-4e49-9295-9ee8f533b555)
 
+## Insertion
+While insertion function finds free element and put data in it, and puts next_id and prev_id according the place we insert
 
+List before insertion element
+
+![image](https://github.com/CiberMonah/List/assets/142305833/4f6927c8-af43-440a-8d36-1a3be8b82e1c)
+
+Than use function:
+
+list_insert(my_list, 4, 6, &head, &tail, &free_head);
+
+And our list looks:
+
+![image](https://github.com/CiberMonah/List/assets/142305833/266288ea-46eb-440d-9f83-e74ed3520c98)
+
+Then:
+
+list_insert(my_list, 4, 7, &head, &tail, &free_head);
+
+![image](https://github.com/CiberMonah/List/assets/142305833/56ba7783-385a-41f3-9a35-15caafc71183)
