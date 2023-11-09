@@ -13,6 +13,7 @@ int main() {
     }
 
     my_list = (NODE*)calloc(START_LENGTH_OF_LIST, sizeof(NODE));
+
     int list_size = START_LENGTH_OF_LIST;
 
     list_init(my_list);
@@ -35,20 +36,13 @@ int main() {
 
     LIST_HTML_DUMP(my_list, head, tail, free_head, list_size);
 
-    realloc_list(my_list, &list_size, 25, &free_head);
+    realloc_list(&my_list, &list_size, 25, &free_head);                     //gets pointer on my_list, because pointer of my_list will change
 
     LIST_HTML_DUMP(my_list, head, tail, free_head, list_size);
-
-    //int* search_array = list_find(my_list, head, 5);
-
-    // for(int i = 0; i < search_array[0]; i++) {
-    //     printf("%d ", search_array[i]);
-    // }
 
     list_dtor(my_list);
 
     fclose(dot_file);
-    //free(search_array);
-    free(my_list);
 
+    free(my_list);
 }

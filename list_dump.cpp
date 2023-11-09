@@ -6,7 +6,9 @@
 int iteration = 0;              //Uses to make o lot of png in raw
 
 static void print_list_chain(FILE* dot_file, NODE* list, int start_id, const char* color) {
-    while(list[start_id].data != POISON) {  
+    //printf("DATA[0] = %d NEXTID[0] = %d PREVID[0] = %d", list[0].data, list[0].next_id, list[0].prev_id);
+
+    while(list[start_id].data != POISON) {
         fprintf(dot_file, "node%d: <next> -> node%d [color = \"%s\"];\n", start_id, list[start_id].next_id, color);
         if(list[start_id].prev_id != -1)
             fprintf(dot_file, "node%d: <prev> -> node%d [color = \"red\"];\n", start_id, list[start_id].prev_id);
@@ -84,7 +86,6 @@ void make_dot_dump(FILE* dot_file, NODE* list, int head, int tail, int free_head
     print_list_chain(dot_file, list, free_head, "#00C5CD");                 //make free edges
 
     fprintf(dot_file, "}");
-
 }
 
 
@@ -165,11 +166,13 @@ void dump_list(FILE* dump_file, NODE* list, int head, int tail, int free_head, u
     fprintf(dump_file,"free list head: %d\n", free_head);
 
     fprintf(dump_file,"\nid:  ");
+
     for(unsigned int i = 0; i < list_size; i ++) {
         fprintf(dump_file, "%*d", NUMBER_OF_SPACES, i);
     } fprintf(dump_file, "\n\n");
 
     fprintf(dump_file, "data:");
+
     for(unsigned int i = 0; i < list_size; i ++) {
         if(list[i].data == FREE_DATA) 
             fprintf(dump_file, "%*s", NUMBER_OF_SPACES, "FREE");
@@ -177,7 +180,9 @@ void dump_list(FILE* dump_file, NODE* list, int head, int tail, int free_head, u
             fprintf(dump_file, "%*s", NUMBER_OF_SPACES, "POIS");
         else 
             fprintf(dump_file, "%*d", NUMBER_OF_SPACES, list[i].data);
-    } fprintf(dump_file, "\n\n");
+    }
+
+    fprintf(dump_file, "\n\n");
 
     fprintf(dump_file, "next:");
     
