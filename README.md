@@ -8,7 +8,7 @@ I used graphviz  https://graphviz.org/ to make images of list
 
 type this in console to make inage from dot file
 
-** dot my_dot*.dot -T png -o my_dot*.png **
+**dot my_dot.dot -T png -o my_dot.png**
 
 My dump generates images and put them to one html file for convenient debugging
 
@@ -39,7 +39,7 @@ List before insertion element
 
 Than use function:
 
-list_insert(my_list, 4, 6, &head, &tail, &free_head);
+**list_insert(my_list, 4, 6, &head, &tail, &free_head);**
 
 And our list looks:
 
@@ -47,7 +47,7 @@ And our list looks:
 
 Then:
 
-list_insert(my_list, 4, 7, &head, &tail, &free_head);
+**list_insert(my_list, 4, 7, &head, &tail, &free_head);**
 
 ![image](https://github.com/CiberMonah/List/assets/142305833/56ba7783-385a-41f3-9a35-15caafc71183)
 
@@ -55,11 +55,16 @@ list_insert(my_list, 4, 7, &head, &tail, &free_head);
 When delete node put thi node to the free list, and make 2 neighbour points on each other
 
 After insertion remember insertion id
+
 *int insert_id = list_insert(my_list, 4, 7, &head, &tail, &free_head);*
+
 **list_delete(my_list, insert_id, &head, &tail, &free_head);**
+
 List before delete:
+
 ![image](https://github.com/CiberMonah/List/assets/142305833/baba560f-645b-4847-a930-73edfe72e297)
 
 List after delete:
+
 ![image](https://github.com/CiberMonah/List/assets/142305833/74e950ab-234a-4211-99ae-1999c2197884)
 
