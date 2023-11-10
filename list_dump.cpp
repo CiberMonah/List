@@ -10,9 +10,9 @@ static void print_list_chain(FILE* dot_file, NODE* list, int start_id, const cha
     //printf("DATA[0] = %d NEXTID[0] = %d PREVID[0] = %d", list[0].data, list[0].next_id, list[0].prev_id);
 
     while(list[start_id].data != POISON) {
-        fprintf(dot_file, "node%d: <next> -> node%d [color = \"%s\"];\n", start_id, list[start_id].next_id, color);
+        fprintf(dot_file, "node%d -> node%d [color = \"%s\"];\n", start_id, list[start_id].next_id, color);
         if(list[start_id].prev_id != -1)
-            fprintf(dot_file, "node%d: <prev> -> node%d [color = \"red\"];\n", start_id, list[start_id].prev_id);
+            fprintf(dot_file, "node%d -> node%d [color = \"red\"];\n", start_id, list[start_id].prev_id);
         
         start_id = list[start_id].next_id;
     }
@@ -155,9 +155,10 @@ void make_html_dump(NODE* list, int head, int tail, int free_head, unsigned int 
 
     fprintf(dump_html, "</body>\n</html>\n");
 
-    fclose(dump_txt);       //Я ХЗ лучше реально не использовать сразу много файлов
+    //fclose(dump_txt);       //Я ХЗ лучше реально не использовать сразу много файлов
 
     iteration++;
+    
 }
 
 void dump_list(FILE* dump_file, NODE* list, int head, int tail, int free_head, unsigned int list_size, const char* file, const char* func, const int line) {

@@ -22,7 +22,11 @@ int main() {
 
     LIST_HTML_DUMP(my_list, head, tail, free_head, list_size);
 
-    list_insert(my_list, 4, 6, &head, &tail, &free_head);
+    int insert_id =list_insert(my_list, 4, 6, &head, &tail, &free_head);
+    
+    LIST_HTML_DUMP(my_list, head, tail, free_head, list_size);
+
+    list_delete(my_list, insert_id, &head, &tail, &free_head);
 
     LIST_HTML_DUMP(my_list, head, tail, free_head, list_size);
 
