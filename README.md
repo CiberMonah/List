@@ -28,7 +28,7 @@ List at start:
 ### Reallocation on biiger size
 ![image](https://github.com/CiberMonah/List/assets/142305833/c72d4fb1-5e75-46de-97b5-98f627ba87c9)
 ### Reallocation on less size
-![image](https://github.com/CiberMonah/List/assets/142305833/e651ccab-0b1d-4e49-9295-9ee8f533b555)
+![image](https://github.com/CiberMonah/List/assets/142305833/a6b1f26c-9434-4189-ba0d-c602d1c1192c)
 
 ## Insertion
 While insertion function finds free element and put data in it, and puts next_id and prev_id according the place we insert
